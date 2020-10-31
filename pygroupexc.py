@@ -24,7 +24,8 @@ def format_exception(exc_info=None, root=None):
         filename = code.co_filename
         if root:
             filename = os.path.relpath(filename, root)
-        rows.append((filename, code.co_name))
+        if not rows or rows[-1] != (filename, code.co_name):
+            rows.append((filename, code.co_name))
         traceback = traceback.tb_next
     rows.append(exc_class.__name__)
     return rows
