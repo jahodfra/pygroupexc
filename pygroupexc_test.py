@@ -1,3 +1,4 @@
+import os
 import pygroupexc
 
 
@@ -14,10 +15,22 @@ def test_format():
         a()
     except Exception:
         assert pygroupexc.format_exception() == [
-            ('/home/frantisek/playground/pygroupexc/pygroupexc_test.py', 'test_format'),
-            ('/home/frantisek/playground/pygroupexc/pygroupexc_test.py', 'a'),
-            ('/home/frantisek/playground/pygroupexc/pygroupexc_test.py', 'b'),
+            (__file__, 'test_format'),
+            (__file__, 'a'),
+            (__file__, 'b'),
             'ValueError'
         ]
         assert pygroupexc.exception_id() == 'ac00f63bd63c8b05be6d967ac79378f9'
 
+
+def test_format_with_root():
+    dirname, base = os.path.split(__file__)
+    try:
+        a()
+    except Exception:
+        assert pygroupexc.format_exception(root=dirname) == [
+            (base, 'test_format_with_root'),
+            (base, 'a'),
+            (base, 'b'),
+            'ValueError'
+        ]
