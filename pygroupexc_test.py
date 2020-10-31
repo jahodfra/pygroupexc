@@ -51,3 +51,13 @@ def test_format_recursive():
             (__file__, 'recursive'),
             'ValueError'
         ]
+
+
+def test_format_attribute_error():
+    try:
+        5 .missing_attribute
+    except Exception:
+        assert pygroupexc.format_exception() == [
+            (__file__, 'test_format_attribute_error'),
+            'AttributeError', 'int', 'missing_attribute'
+        ]
